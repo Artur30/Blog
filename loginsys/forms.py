@@ -20,10 +20,3 @@ class UserRegisterForm(UserCreationForm):
         if commit:
             user.save()
         return user
-
-
-
-
-
-
-

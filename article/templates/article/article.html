@@ -9,7 +9,9 @@
 <div class="large-offset-1 large-12 columns">
     <p><strong>Комментарии:</strong></p>
     {% for comment in comments %}
-        <p>{{ comment.comments_from.username }} {{ comment.comments_date }}</p>
+        <p>
+            {{comment.comments_from.last_name}} {{ comment.comments_from.first_name }} ({{ comment.comments_from.username }}) {{ comment.comments_date }}
+        </p>
         <p>{{ comment.comments_text }}</p>
         <hr>
     {% endfor %}

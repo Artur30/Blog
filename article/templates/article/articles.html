@@ -11,7 +11,8 @@
     <p>
         <a href="{% url 'article:add_like' articles.number article.id %}">
             <img src="{% static 'like.jpg' %}" width="25px" height="25px">
-        </a>{{ article.article_likes }}
+        </a>
+        {{ article.article_likes }}
     </p>
     <hr>
 {% endfor %}

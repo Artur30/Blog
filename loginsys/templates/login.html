@@ -1,4 +1,6 @@
 {% extends 'main.html' %}
+{% load socialaccount %}
+{% load staticfiles %}
 
 {% block login %}
     <div class="large-offset-3 large-6 columns">
@@ -15,7 +17,12 @@
             <div class="label round secondary">
                 <a href="{% url 'loginsys:register' %}">Регистрация</a>
             </div>
+
         </form>
+        <a href="{% provider_login_url "vk" method="oauth2" %}">
+            <img src="{% static 'vk_image.jpg' %}" width="35px" height="35px">
+        </a>
     </div>
+
 {% endblock %}
 

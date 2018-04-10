@@ -1,5 +1,6 @@
 from django.shortcuts import render, render_to_response, redirect, reverse
 from django.contrib import auth
+from django.http import HttpResponse
 from django.template.context_processors import csrf
 from django.contrib.auth.forms import UserCreationForm
 from loginsys.forms import UserRegisterForm
@@ -20,7 +21,7 @@ def login(request):
             args['login_error'] = 'Пользователь не найден'
             return render_to_response('login.html', args)
     else:
-        return render_to_response('login.html', args)
+        return render(request, 'login.html', args)
 
 
 def logout(request):
@@ -37,8 +38,10 @@ def register(request):
         if new_user_form.is_valid():
             new_user_form.save()
             new_user = auth.authenticate(
-                username=new_user_form.cleaned_data['username'], password=new_user_form.cleaned_data['password1']
-        )
+                username=new_user_form.cleaned_data['username'], password=new_user_form.cleaned_data['password1'],
+                first_name=new_user_form.cleaned_data['first_name'], last_name=new_user_form.cleaned_data['last_name'],
+                email=new_user_form.cleaned_data['email']
+            )
             auth.login(request, new_user)
             return redirect(reverse('article:articles'))
         else:

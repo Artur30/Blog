@@ -9,11 +9,12 @@ from django.contrib import auth
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.utils import timezone
+from blog import settings
 
 
 def articles(request, page_number=1):
     all_articles = Article.objects.all()
-    current_page = Paginator(all_articles, per_page=2)
+    current_page = Paginator(all_articles, per_page=settings.Number_Articles_On_Page)
     articles_page = current_page.page(page_number)
     username = auth.get_user(request).username
 
@@ -30,7 +31,7 @@ def article(request, article_id=1, comments_page_number=1):
     args['username'] = auth.get_user(request).username
 
     # Пагинация комментариев
-    current_comments_page = Paginator(args['comments'], per_page=3)
+    current_comments_page = Paginator(args['comments'], per_page=settings.Number_Comments_On_Page)
     args['comments'] = current_comments_page.page(comments_page_number)
 
     return render_to_response('article/article.html', args)

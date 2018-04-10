@@ -10,6 +10,11 @@
 <div class="top-bar">
     <section class="top-bar-section">
         <ul class="right">
+            {% if not username %}
+                <li><a href="{% url 'loginsys:register' %}">Регистрация</a></li>
+            {% endif %}
+        </ul>
+        <ul class="right">
             {% if username %}
                 <li><a href="{% url 'loginsys:logout' %}">Выйти ({{ username }})</a></li>
             {% else %}
