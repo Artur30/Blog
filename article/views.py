@@ -2,14 +2,15 @@ from django.shortcuts import render, render_to_response, get_object_or_404, redi
 from django.http import HttpResponse, Http404
 from django.template.loader import get_template
 from django.template import Context
-from article.models import Article, Comments
-from article.forms import CommentForm, NewState
+from article.models import Article, Comments, Image
+from article.forms import CommentForm, NewState, ImageForm
 from django.template.context_processors import csrf
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.utils import timezone
 from blog import settings
+from django.forms import formset_factory, modelformset_factory
 
 
 def articles(request, page_number=1):
@@ -30,7 +31,7 @@ def article(request, article_id=1, comments_page_number=1):
     args['comments'] = Comments.objects.filter(comments_article_id=article_id)
     args['form'] = comment_form
     args['username'] = auth.get_user(request).username
-
+    args['images'] = Image.objects.filter(image_article_id=article_id)
     # Пагинация комментариев
     current_comments_page = Paginator(args['comments'], per_page=settings.Number_Comments_On_Page)
     args['comments'] = current_comments_page.page(comments_page_number)
@@ -117,9 +118,9 @@ def suggest_article(request):
             article.article_published = False
             article.save()
             return redirect(reverse('article:articles'))
+    else:
+        return render(request, 'suggest_article/index.html', args)
     return render(request, 'suggest_article/index.html', args)
-
-
 
 
 

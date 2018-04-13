@@ -11,8 +11,9 @@ class Article(models.Model):
     article_text = models.TextField(verbose_name='Текст статьи')
     article_date = models.DateTimeField(verbose_name='Дата и время')
     article_likes = models.IntegerField(verbose_name='Likes', default=0)
-    article_image = models.ImageField(verbose_name='Картинка', upload_to='images/article/%Y/%m/%d',
-                                      blank=True, null=True)
+
+    # article_image = models.ImageField(verbose_name='Картинка', upload_to='images/article/%Y/%m/%d',
+    #                                   blank=True, null=True)
     article_video = models.FileField(verbose_name='Видео', upload_to='video/article/%Y/%m%d',
                                      blank=True, null=True)
     article_published = models.BooleanField(default=True)
@@ -21,6 +22,16 @@ class Article(models.Model):
 
     def __str__(self):
         return self.article_title
+
+
+class Image(models.Model):
+
+    class Meta:
+        db_table = 'image'
+
+    image = models.ImageField(verbose_name='Картинка', upload_to='images/article/%Y/%m/%d',
+                              blank=True, null=True)
+    image_article = models.ForeignKey(Article, on_delete=models.CASCADE)
 
 
 class Comments(models.Model):

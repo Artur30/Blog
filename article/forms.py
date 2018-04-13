@@ -1,4 +1,4 @@
-from article.models import Comments, Article
+from article.models import Comments, Article, Image
 from django import forms
 
 
@@ -13,8 +13,15 @@ class NewState(forms.ModelForm):
 
     class Meta:
         model = Article
-        fields = ['article_title', 'article_text', 'article_image', 'article_video']
+        fields = ['article_title', 'article_text', 'article_video']
 
+
+class ImageForm(forms.ModelForm):
+
+    class Meta:
+        model = Image
+        fields = ['image']
+    image_img = forms.ImageField(label='Картинка')
 
 
 
