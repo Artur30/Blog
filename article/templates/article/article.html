@@ -1,10 +1,23 @@
 {% extends 'main.html' %}
-
+{% load staticfiles %}
 
 {% block article %}
 <h4>{{ article.article_date }}</h4>
+
+<div class="large-offset-1 large-10 columns">
 <h2>{{ article.article_title }}</h2>
 <p>{{ article.article_text }}</p>
+
+{% if article.article_image %}
+    <img src="{{ MEDIA_URL }}{{ article.article_image }}" width="400px" height="600px"/>
+{% endif %}
+<hr>
+{% if article.article_video %}
+    <video width="400px" height="600px" controls>
+        <source src="{{ MEDIA_URL }}{{ article.article_video }}">
+    </video>
+{% endif %}
+</div>
 <hr>
 <div class="large-offset-1 large-12 columns">
     <p><strong>Комментарии:</strong></p>

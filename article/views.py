@@ -3,7 +3,7 @@ from django.http import HttpResponse, Http404
 from django.template.loader import get_template
 from django.template import Context
 from article.models import Article, Comments
-from article.forms import CommentForm
+from article.forms import CommentForm, NewState
 from django.template.context_processors import csrf
 from django.contrib import auth
 from django.contrib.auth.models import User
@@ -13,12 +13,13 @@ from blog import settings
 
 
 def articles(request, page_number=1):
-    all_articles = Article.objects.all()
+    all_articles = Article.objects.filter(article_published=1).order_by('-article_date')
     current_page = Paginator(all_articles, per_page=settings.Number_Articles_On_Page)
     articles_page = current_page.page(page_number)
     username = auth.get_user(request).username
 
-    return render_to_response('article/articles.html', {'articles': articles_page, 'username': username})
+    context = {'articles': articles_page, 'username': username}
+    return render(request, 'article/articles.html', context)
 
 
 def article(request, article_id=1, comments_page_number=1):
@@ -34,7 +35,7 @@ def article(request, article_id=1, comments_page_number=1):
     current_comments_page = Paginator(args['comments'], per_page=settings.Number_Comments_On_Page)
     args['comments'] = current_comments_page.page(comments_page_number)
 
-    return render_to_response('article/article.html', args)
+    return render(request, 'article/article.html', args)
 
 
 """
@@ -52,8 +53,8 @@ def add_like(request, article_id):
 
 
 def add_like(request, page_number, article_id):
-    all_articles = Article.objects.all()
-    current_page = Paginator(all_articles, per_page=2)
+    all_articles = Article.objects.filter(article_published=1).order_by('-article_date')
+    current_page = Paginator(all_articles, per_page=settings.Number_Articles_On_Page)
     articles_page = current_page.page(page_number)
     username = auth.get_user(request).username
 
@@ -66,7 +67,9 @@ def add_like(request, page_number, article_id):
             article.article_likes += 1
             article.users_likes.add(current_user)
             article.save()
-    return render_to_response('article/articles.html', {'articles': articles_page, 'username': username})
+
+    context = {'articles': articles_page, 'username': username}
+    return render(request, 'article/articles.html', context)
 
 
 def add_comment(request, article_id):
@@ -100,6 +103,21 @@ def delete_likes(request):
         article.save()
     return redirect(reverse('article:articles'))
 
+
+def suggest_article(request):
+    args = {}
+    args.update(csrf(request))
+    args['form'] = NewState
+
+    if request.POST:
+        form = NewState(request.POST, request.FILES)
+        if form.is_valid():
+            article = form.save(commit=False)
+            article.article_date = timezone.now()
+            article.article_published = False
+            article.save()
+            return redirect(reverse('article:articles'))
+    return render(request, 'suggest_article/index.html', args)
 
 
 
