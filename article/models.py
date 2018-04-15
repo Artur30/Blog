@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from ckeditor.fields import RichTextField
 
 
 class Article(models.Model):
@@ -8,7 +9,8 @@ class Article(models.Model):
         db_table = 'article'
 
     article_title = models.CharField(verbose_name='Заголовок', max_length=200)
-    article_text = models.TextField(verbose_name='Текст статьи')
+    # article_text = models.TextField(verbose_name='Текст статьи')
+    article_text = RichTextField(verbose_name='Текст статьи')
     article_date = models.DateTimeField(verbose_name='Дата и время')
     article_likes = models.IntegerField(verbose_name='Likes', default=0)
 
