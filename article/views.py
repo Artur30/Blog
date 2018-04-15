@@ -3,7 +3,7 @@ from django.http import HttpResponse, Http404
 from django.template.loader import get_template
 from django.template import Context
 from article.models import Article, Comments, Image
-from article.forms import CommentForm, NewState, ImageForm
+from article.forms import CommentForm, NewState
 from django.template.context_processors import csrf
 from django.contrib import auth
 from django.contrib.auth.models import User

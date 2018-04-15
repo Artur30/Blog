@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from ckeditor.fields import RichTextField
 
 
 class Article(models.Model):
@@ -9,15 +8,11 @@ class Article(models.Model):
         db_table = 'article'
 
     article_title = models.CharField(verbose_name='Заголовок', max_length=200)
-    # article_text = models.TextField(verbose_name='Текст статьи')
-    article_text = RichTextField(verbose_name='Текст статьи')
+    article_start_image = models.ImageField(verbose_name='Начальная картинка', blank=True, null=True)
+    article_text = models.TextField(verbose_name='Текст статьи')
     article_date = models.DateTimeField(verbose_name='Дата и время')
     article_likes = models.IntegerField(verbose_name='Likes', default=0)
 
-    # article_image = models.ImageField(verbose_name='Картинка', upload_to='images/article/%Y/%m/%d',
-    #                                   blank=True, null=True)
-    article_video = models.FileField(verbose_name='Видео', upload_to='video/article/%Y/%m%d',
-                                     blank=True, null=True)
     article_published = models.BooleanField(default=True)
 
     users_likes = models.ManyToManyField(User, related_name='users_article_main')
@@ -27,6 +22,7 @@ class Article(models.Model):
 
 
 class Image(models.Model):
+    """ Лишние, но уберу позже """
 
     class Meta:
         db_table = 'image'

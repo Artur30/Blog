@@ -10,7 +10,7 @@
     <img src="{{ MEDIA_URL }}{{ image.image }}" width="400px" height="600px"/>
 <hr>
 {% endfor %}
-<p>{{ article.article_text }}</p>
+<p>{{ article.article_text|safe }}</p>
 
 
 

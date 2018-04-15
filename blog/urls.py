@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^auth/', include('loginsys.urls')),
     url(r'^auth_social_networks/', include('allauth.urls')),
+    url(r'^summernote/', include('django_summernote.urls')),
     url(r'^', include('article.urls')),
 ]
 

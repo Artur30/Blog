@@ -6,7 +6,7 @@
         <!-- enctype обязателен, а то request.FILES будет пустым -->
         <form action="{% url 'article:suggest_article' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ form }}
+            {{ form|safe }}
             <input class="button" type="submit" value="Предложить">
         </form>
     </div>
