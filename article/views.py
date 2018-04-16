@@ -2,7 +2,7 @@ from django.shortcuts import render, render_to_response, get_object_or_404, redi
 from django.http import HttpResponse, Http404
 from django.template.loader import get_template
 from django.template import Context
-from article.models import Article, Comments, Image
+from article.models import Article, Comments
 from article.forms import CommentForm, NewState
 from django.template.context_processors import csrf
 from django.contrib import auth
@@ -14,8 +14,8 @@ from django.forms import formset_factory, modelformset_factory
 
 
 def articles(request, page_number=1):
-    all_articles = Article.objects.filter(article_published=1).order_by('-article_date')
-    current_page = Paginator(all_articles, per_page=settings.Number_Articles_On_Page)
+    all_articles_published = Article.objects.filter(article_published=1).order_by('-article_date')
+    current_page = Paginator(all_articles_published, per_page=settings.Number_Articles_On_Page)
     articles_page = current_page.page(page_number)
     username = auth.get_user(request).username
 
@@ -31,7 +31,6 @@ def article(request, article_id=1, comments_page_number=1):
     args['comments'] = Comments.objects.filter(comments_article_id=article_id)
     args['form'] = comment_form
     args['username'] = auth.get_user(request).username
-    args['images'] = Image.objects.filter(image_article_id=article_id)
     # Пагинация комментариев
     current_comments_page = Paginator(args['comments'], per_page=settings.Number_Comments_On_Page)
     args['comments'] = current_comments_page.page(comments_page_number)
@@ -116,6 +115,10 @@ def suggest_article(request):
             article = form.save(commit=False)
             article.article_date = timezone.now()
             article.article_published = False
+
+            article.article_author += auth.get_user(request).last_name + ' '
+            article.article_author += auth.get_user(request).first_name + ' '
+            article.article_author += '(' + auth.get_user(request).username + ')'
             article.save()
             return redirect(reverse('article:articles'))
     else:

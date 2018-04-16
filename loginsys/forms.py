@@ -8,6 +8,12 @@ class UserRegisterForm(UserCreationForm):
     first_name = forms.CharField(label='Имя')
     last_name = forms.CharField(label='Фамилия')
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].help_text = ''
+        self.fields['password1'].help_text = ''
+        self.fields['password2'].help_text = ''
+    
     class Meta:
         model = User
         fields = ('username', 'email', 'first_name', 'last_name')

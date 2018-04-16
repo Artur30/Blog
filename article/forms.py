@@ -1,4 +1,4 @@
-from article.models import Comments, Article, Image
+from article.models import Comments, Article
 from django import forms
 from django_summernote.widgets import SummernoteWidget
 
@@ -14,7 +14,7 @@ class NewState(forms.ModelForm):
 
     class Meta:
         model = Article
-        fields = ['article_title', 'article_text']
+        fields = ['article_title', 'article_start_image', 'article_start_text', 'article_text']
         widgets = {
             'article_text': SummernoteWidget(),
         }

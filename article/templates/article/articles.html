@@ -9,13 +9,14 @@
         <div class="large-9 columns" role="content">
             <article>
                 <h3><a href="{% url 'article:article' article.id 1 %}">{{ article.article_title }}</a></h3>
-                <h6>Автор <a href="#">Гумиров Артур</a>, дата публикации {{ article.article_date }}</h6>
+                <h6>Автор <a href="#">{{ article.article_author }}</a>, дата публикации {{ article.article_date }}</h6>
                 {% if article.article_start_image %}
-                    <img src="{{ MEDIA_URL }}{{ article.article_image }}"
+                    <img src="{{ MEDIA_URL }}{{ article.article_start_image }}"
                          style="border-radius: 10px; margin-left: 3%; margin-bottom: 3%;"
                          align="right" width="350px" height="240px"/>
                 {% endif %}
-                <p>{{ article.article_text|safe }}</p>
+
+                <p>{{ article.article_start_text }}</p>
 
                 <a href="{% url 'article:add_like' articles.number article.id %}">
                     <img src="{% static 'like.jpg' %}" width="25px" height="25px">

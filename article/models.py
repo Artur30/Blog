@@ -8,28 +8,19 @@ class Article(models.Model):
         db_table = 'article'
 
     article_title = models.CharField(verbose_name='Заголовок', max_length=200)
-    article_start_image = models.ImageField(verbose_name='Начальная картинка', blank=True, null=True)
-    article_text = models.TextField(verbose_name='Текст статьи')
+    article_start_image = models.ImageField(verbose_name='Начальная картинка', upload_to='images/article/%Y/%m/%d',
+                                            blank=True, null=True)
+    article_start_text = models.TextField(verbose_name='Краткий текст')
+    article_text = models.TextField(verbose_name='Содержимое статьи')
     article_date = models.DateTimeField(verbose_name='Дата и время')
     article_likes = models.IntegerField(verbose_name='Likes', default=0)
-
+    article_author = models.CharField(verbose_name='Автор статьи', max_length=200)
     article_published = models.BooleanField(default=True)
 
     users_likes = models.ManyToManyField(User, related_name='users_article_main')
 
     def __str__(self):
         return self.article_title
-
-
-class Image(models.Model):
-    """ Лишние, но уберу позже """
-
-    class Meta:
-        db_table = 'image'
-
-    image = models.ImageField(verbose_name='Картинка', upload_to='images/article/%Y/%m/%d',
-                              blank=True, null=True)
-    image_article = models.ForeignKey(Article, on_delete=models.CASCADE)
 
 
 class Comments(models.Model):
