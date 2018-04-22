@@ -17,9 +17,9 @@ def articles(request, page_number=1):
     all_articles_published = Article.objects.filter(article_published=1).order_by('-article_date')
     current_page = Paginator(all_articles_published, per_page=settings.Number_Articles_On_Page)
     articles_page = current_page.page(page_number)
-    username = auth.get_user(request).username
+    user = auth.get_user(request)
 
-    context = {'articles': articles_page, 'username': username}
+    context = {'articles': articles_page, 'user': user}
     return render(request, 'article/articles.html', context)
 
 
@@ -30,7 +30,7 @@ def article(request, article_id=1, comments_page_number=1):
     args['article'] = Article.objects.get(id=article_id)
     args['comments'] = Comments.objects.filter(comments_article_id=article_id)
     args['form'] = comment_form
-    args['username'] = auth.get_user(request).username
+    args['user'] = auth.get_user(request)
     # Пагинация комментариев
     current_comments_page = Paginator(args['comments'], per_page=settings.Number_Comments_On_Page)
     args['comments'] = current_comments_page.page(comments_page_number)
@@ -56,7 +56,7 @@ def add_like(request, page_number, article_id):
     all_articles = Article.objects.filter(article_published=1).order_by('-article_date')
     current_page = Paginator(all_articles, per_page=settings.Number_Articles_On_Page)
     articles_page = current_page.page(page_number)
-    username = auth.get_user(request).username
+    user = auth.get_user(request)
 
     if request.user.is_authenticated:
         users = User.objects.filter(users_article_main=article_id)
@@ -68,7 +68,7 @@ def add_like(request, page_number, article_id):
             article.users_likes.add(current_user)
             article.save()
 
-    context = {'articles': articles_page, 'username': username}
+    context = {'articles': articles_page, 'user': user}
     return render(request, 'article/articles.html', context)
 
 

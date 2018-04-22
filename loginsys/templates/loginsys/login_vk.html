@@ -1,0 +1,14 @@
+{% extends 'main.html' %}
+
+{% block article %}
+<div class="large-offset-3 large-6 columns">
+
+    <form action="{% url 'loginsys:login_vk' %}" method="post">
+        {% csrf_token %}
+        {{ signup_form }}
+        {{ login_form }}
+        <input type="submit" class="button" value="Войти">
+    </form>
+</div>
+{% endblock %}
+

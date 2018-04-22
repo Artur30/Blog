@@ -4,6 +4,9 @@ from django.http import HttpResponse
 from django.template.context_processors import csrf
 from django.contrib.auth.forms import UserCreationForm
 from loginsys.forms import UserRegisterForm
+from allauth.account.forms import LoginForm
+from allauth.socialaccount.forms import SignupForm
+from allauth.account.forms import LoginForm, SignupForm
 
 
 def login(request):
@@ -49,4 +52,5 @@ def register(request):
     return render(request, 'loginsys/register.html', args)
 
 
-
+def show_auth(request):
+    return render(request, 'loginsys/login_vk.html', {'singup_form': SignupForm(), 'login_form': LoginForm()})

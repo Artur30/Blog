@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.contrib.auth.models import User
+from django.forms.widgets import RadioSelect, Select
 
 
 class UserRegisterForm(UserCreationForm):
@@ -26,5 +27,4 @@ class UserRegisterForm(UserCreationForm):
         if commit:
             user.save()
         return user
-
 

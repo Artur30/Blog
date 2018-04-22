@@ -16,19 +16,23 @@
 <div class="top-bar">
     <section class="top-bar-section">
         <ul class="right">
-            {% if not username %}
+            {% if not user.username %}
                 <li><a href="{% url 'loginsys:register' %}">Регистрация</a></li>
             {% endif %}
         </ul>
         <ul class="right">
-            {% if username %}
-                <li><a href="{% url 'loginsys:logout' %}">Выйти ({{ username }})</a></li>
+            {% if user.username %}
+                <li><a href="{% url 'loginsys:logout' %}">Выйти ({{ user.username }})</a></li>
             {% else %}
                 <li><a href="{% url 'loginsys:login' %}">Войти</a></li>
             {% endif %}
         </ul>
         <ul class="left">
-            <li><a href="{% url 'article:suggest_article' %}">Предложить статью</a></li>
+            {% if user.username %}
+                <li><a href="{% url 'article:suggest_article' %}">Предложить статью</a></li>
+            {% else %}
+                <li><a href="">Зарегестрируйтесь для предложения статьи</a></li>
+            {% endif %}
         </ul>
     </section>
 </div>

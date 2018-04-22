@@ -1,4 +1,4 @@
-#!/home/murza/Документы/Programming/web/Blog/venv/bin/python
+#!/home/murza/Programming/web/Blog/venv/bin/python3.6
 
 # -*- coding: utf-8 -*-
 import re
