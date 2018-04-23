@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from taggit.managers import TaggableManager
 
 
 class Article(models.Model):
@@ -16,6 +17,7 @@ class Article(models.Model):
     article_likes = models.IntegerField(verbose_name='Likes', default=0)
     article_author = models.CharField(verbose_name='Автор статьи', max_length=200)
     article_published = models.BooleanField(default=True)
+    article_tags = TaggableManager(verbose_name='Теги', blank=True)
 
     users_likes = models.ManyToManyField(User, related_name='users_article_main')
 

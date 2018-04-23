@@ -5,7 +5,9 @@
 {% block article %}
 <!--<div class="large-8 columns">-->
 {% for article in articles %}
+
     <div class="row">
+
         <div class="large-9 columns" role="content">
             <article>
                 <h3><a href="{% url 'article:article' article.id 1 %}">{{ article.article_title }}</a></h3>
@@ -25,20 +27,20 @@
             </article>
             <hr />
         </div>
+        {% if forloop.first %}
+        <aside class="large-3 columns">
+            <h5>Categories</h5>
+            <ul class="side-nav">
+                {% for tag in tags %}
+                    <li><a href="#">{{ tag }}</a></li>
+                {% endfor %}
+            </ul>
+        </aside>
+        {% endif %}
+
     </div>
-    <!-- Тестируем новый интерфейс
-    <h6>Дата публикации: {{ article.article_date }}</h6>
-    <h4><a href="{% url 'article:article' article.id 1 %}">{{ article.article_title }}</a></h4>
-    <p>{{ article.article_text }}</p>
-    <p>
-        <a href="{% url 'article:add_like' articles.number article.id %}">
-            <img src="{% static 'like.jpg' %}" width="25px" height="25px">
-        </a>
-        {{ article.article_likes }}
-    </p>
-    <hr>
-    -->
 {% endfor %}
+
 
 <div class="row">
     <div class="large-3 large-offset-5 columns">

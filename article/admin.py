@@ -12,10 +12,10 @@ class ArticleInLine(admin.StackedInline):
 class ArticleAdmin(SummernoteModelAdmin):
 
     fields = ['article_title', 'article_start_image', 'article_start_text', 'article_date', 'article_text',
-              'article_published', 'article_author']
+              'article_published', 'article_author', 'article_tags']
     summernote_fields = ['article_text']
     inlines = [ArticleInLine]
-    list_filter = ['article_date', 'article_author']
+    list_filter = ['article_date', 'article_tags']
     list_display = ['article_title', 'article_date', 'article_author']
 
 

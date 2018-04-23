@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'article',
     'loginsys',
     'django_summernote',
+    'taggit',
 
     'django.contrib.sites',
     'allauth',

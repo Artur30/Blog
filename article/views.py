@@ -19,7 +19,11 @@ def articles(request, page_number=1):
     articles_page = current_page.page(page_number)
     user = auth.get_user(request)
 
-    context = {'articles': articles_page, 'user': user}
+    tags = []
+    for obj in all_articles_published:
+        tags += obj.article_tags.names()
+
+    context = {'articles': articles_page, 'user': user, 'tags': tags}
     return render(request, 'article/articles.html', context)
 
 
