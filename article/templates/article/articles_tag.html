@@ -32,7 +32,7 @@
             <h5>Теги</h5>
             <ul class="side-nav">
                 {% for tag in tags %}
-                    <li><a href="{% url 'article:articles_tag' 1 tag  %}">{{ tag }}</a></li>
+                    <li><a href="{% url 'article:articles_tag' 1 tag %}">{{ tag }}</a></li>
                 {% endfor %}
             </ul>
         </aside>

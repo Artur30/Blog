@@ -130,6 +130,23 @@ def suggest_article(request):
     return render(request, 'suggest_article/index.html', args)
 
 
+def articles_tag(request, tag, page_number=1):
+    all_articles_published = Article.objects.filter(
+        article_published=1
+    ).filter(
+        article_tags__name=tag
+    ).order_by('-article_date')
+
+    current_page = Paginator(all_articles_published, per_page=settings.Number_Articles_On_Page)
+    articles_page = current_page.page(page_number)
+
+    tags = []
+    for obj in Article.objects.filter(article_published=1):
+        tags += obj.article_tags.names()
+
+    context = {'articles': articles_page, 'tags': tags}
+    return render(request, 'article/articles_tag.html', context)
+
 
 
 
