@@ -4,12 +4,14 @@ from django.http import HttpResponse
 from django.template.context_processors import csrf
 from django.contrib.auth.forms import UserCreationForm
 from loginsys.forms import UserRegisterForm
-from allauth.account.forms import LoginForm
-from allauth.socialaccount.forms import SignupForm
-from allauth.account.forms import LoginForm, SignupForm
 
 
 def login(request):
+    """
+    Function for logging in
+    :param request:
+    :return:
+    """
     args = {}
     args.update(csrf(request))
     if request.POST:
@@ -28,11 +30,21 @@ def login(request):
 
 
 def logout(request):
+    """
+    Function for logging out
+    :param request:
+    :return:
+    """
     auth.logout(request)
     return redirect(reverse('article:articles'))
 
 
 def register(request):
+    """
+    Function for register user
+    :param request:
+    :return:
+    """
     args = {}
     args.update(csrf(request))
     args['form'] = UserRegisterForm()
@@ -51,6 +63,3 @@ def register(request):
             args['form'] = new_user_form
     return render(request, 'loginsys/register.html', args)
 
-
-def show_auth(request):
-    return render(request, 'loginsys/login_vk.html', {'singup_form': SignupForm(), 'login_form': LoginForm()})

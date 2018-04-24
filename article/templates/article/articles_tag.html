@@ -3,70 +3,63 @@
 
 
 {% block article %}
-<!--<div class="large-8 columns">-->
-{% for article in articles %}
+    {% for article in articles %}
+        <div class="row">
+            <div class="large-9 columns" role="content">
+                <article>
+                    <h3><a href="{% url 'article:article' article.id 1 %}">{{ article.article_title }}</a></h3>
+                    <h6>Автор <a href="#">{{ article.article_author }}</a>, дата публикации {{ article.article_date }}</h6>
+                    {% if article.article_start_image %}
+                        <img src="{{ MEDIA_URL }}{{ article.article_start_image }}"
+                             style="border-radius: 10px; margin-left: 3%; margin-bottom: 3%;"
+                             align="right" width="350px" height="240px"/>
+                    {% endif %}
+                    <p>{{ article.article_start_text }}</p>
+                    <a href="{% url 'article:add_like' articles.number article.id %}">
+                        <img src="{% static 'like.jpg' %}" width="25px" height="25px">
+                    </a>
+                    {{ article.article_likes }}
+                </article>
+                <hr />
+            </div>
+            {% if forloop.first %}
+            <aside class="large-3 columns">
+                <h5>Теги</h5>
+                {% for tag in tags %}
+                    <div class="label round secondary">
+                         <a href="{% url 'article:articles_tag' 1 tag %}">{{ tag }}</a>
+                    </div>
+                {% endfor %}
+            </aside>
+            {% endif %}
+        </div>
+    {% endfor %}
+
 
     <div class="row">
-
-        <div class="large-9 columns" role="content">
-            <article>
-                <h3><a href="{% url 'article:article' article.id 1 %}">{{ article.article_title }}</a></h3>
-                <h6>Автор <a href="#">{{ article.article_author }}</a>, дата публикации {{ article.article_date }}</h6>
-                {% if article.article_start_image %}
-                    <img src="{{ MEDIA_URL }}{{ article.article_start_image }}"
-                         style="border-radius: 10px; margin-left: 3%; margin-bottom: 3%;"
-                         align="right" width="350px" height="240px"/>
-                {% endif %}
-
-                <p>{{ article.article_start_text }}</p>
-
-                <a href="{% url 'article:add_like' articles.number article.id %}">
-                    <img src="{% static 'like.jpg' %}" width="25px" height="25px">
-                </a>
-                {{ article.article_likes }}
-            </article>
-            <hr />
-        </div>
-        {% if forloop.first %}
-        <aside class="large-3 columns">
-            <h5>Теги</h5>
-            <ul class="side-nav">
-                {% for tag in tags %}
-                    <li><a href="{% url 'article:articles_tag' 1 tag %}">{{ tag }}</a></li>
-                {% endfor %}
-            </ul>
-        </aside>
-        {% endif %}
-
-    </div>
-{% endfor %}
-
-
-<div class="row">
-    <div class="large-3 large-offset-5 columns">
-        <ul class="pagination">
-            {% if articles.has_previous %}
-                <li class="arrow"><a href="/page/{{ articles.previous_page_number }}/">&laquo;</a></li>
-            {% else %}
-                <li class="arrow unavailable"><a href="">&laquo;</a></li>
-            {% endif %}
-
-            {% for page in articles.paginator.page_range %}
-                <!-- .number - номер текущей страницы -->
-                {% if page == articles.number %}
-                    <li class="current"><a href="/page/{{ page }}/">{{ page }}</a></li>
+        <div class="large-3 large-offset-5 columns">
+            <ul class="pagination">
+                {% if articles.has_previous %}
+                    <li class="arrow"><a href="/page/{{ articles.previous_page_number }}/">&laquo;</a></li>
                 {% else %}
-                    <li><a href="/page/{{ page }}/">{{ page }}</a></li>
+                    <li class="arrow unavailable"><a href="">&laquo;</a></li>
                 {% endif %}
-            {% endfor %}
 
-            {% if articles.has_next %}
-                <li class="arrow"><a href="/page/{{ articles.next_page_number }}/">&raquo;</a></li>
-            {% else %}
-                <li class="arrow unavailable"><a href="">&raquo;</a></li>
-            {% endif %}
-        </ul>
+                {% for page in articles.paginator.page_range %}
+                    {% if page == articles.number %}
+                        <li class="current"><a href="/page/{{ page }}/">{{ page }}</a></li>
+                    {% else %}
+                        <li><a href="/page/{{ page }}/">{{ page }}</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if articles.has_next %}
+                    <li class="arrow"><a href="/page/{{ articles.next_page_number }}/">&raquo;</a></li>
+                {% else %}
+                    <li class="arrow unavailable"><a href="">&raquo;</a></li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
-</div>
 
 {% endblock %}

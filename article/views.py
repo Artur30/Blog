@@ -1,7 +1,5 @@
 from django.shortcuts import render, render_to_response, get_object_or_404, redirect, reverse
 from django.http import HttpResponse, Http404
-from django.template.loader import get_template
-from django.template import Context
 from article.models import Article, Comments
 from article.forms import CommentForm, NewState
 from django.template.context_processors import csrf
@@ -10,10 +8,16 @@ from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.utils import timezone
 from blog import settings
-from django.forms import formset_factory, modelformset_factory
 
 
 def articles(request, page_number=1):
+    """
+    The function calculates all published articles, sorts them in descending
+    order of time, there is a paginator, passesit to the template.
+    :param request:
+    :param page_number:
+    :return:
+    """
     all_articles_published = Article.objects.filter(article_published=1).order_by('-article_date')
     current_page = Paginator(all_articles_published, per_page=settings.Number_Articles_On_Page)
     articles_page = current_page.page(page_number)
@@ -28,6 +32,13 @@ def articles(request, page_number=1):
 
 
 def article(request, article_id=1, comments_page_number=1):
+    """
+    The function calculates the elements of a single article
+    :param request:
+    :param article_id:
+    :param comments_page_number:
+    :return:
+    """
     comment_form = CommentForm
     args = {}
     args.update(csrf(request))
@@ -42,21 +53,14 @@ def article(request, article_id=1, comments_page_number=1):
     return render(request, 'article/article.html', args)
 
 
-"""
-def add_like(request, article_id):
-    if article_id in request.COOKIES:
-        return redirect(reverse('article:articles'))
-    else:
-        article = get_object_or_404(Article, pk=article_id)
-        article.article_likes += 1
-        article.save()
-        response = redirect(reverse('article:articles'))
-        response.set_cookie(article_id, 'cookie')
-        return response
-"""
-
-
 def add_like(request, page_number, article_id):
+    """
+    The function adds like of the article
+    :param request:
+    :param page_number:
+    :param article_id:
+    :return:
+    """
     all_articles = Article.objects.filter(article_published=1).order_by('-article_date')
     current_page = Paginator(all_articles, per_page=settings.Number_Articles_On_Page)
     articles_page = current_page.page(page_number)
@@ -77,6 +81,12 @@ def add_like(request, page_number, article_id):
 
 
 def add_comment(request, article_id):
+    """
+    The function adds comment of the article
+    :param request:
+    :param article_id:
+    :return:
+    """
     if request.POST and ('pause' not in request.session):
         form = CommentForm(request.POST)
         if form.is_valid():
@@ -96,19 +106,12 @@ def add_comment(request, article_id):
     return redirect(reverse('article:article', args=(article_id, 1)))
 
 
-def delete_likes(request):
-    """ Удаление всех лайков на всех статьях """
-
-    articles = Article.objects.all()
-
-    for article in articles:
-        article.article_likes = 0
-        article.users_likes.clear()
-        article.save()
-    return redirect(reverse('article:articles'))
-
-
 def suggest_article(request):
+    """
+    The function preposes new article
+    :param request:
+    :return:
+    """
     args = {}
     args.update(csrf(request))
     args['form'] = NewState
@@ -131,6 +134,13 @@ def suggest_article(request):
 
 
 def articles_tag(request, tag, page_number=1):
+    """
+    Function for working with tags.
+    :param request:
+    :param tag:
+    :param page_number:
+    :return:
+    """
     all_articles_published = Article.objects.filter(
         article_published=1
     ).filter(
